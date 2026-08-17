@@ -25,15 +25,17 @@
   :root{
     --pink:#FF6B8B; --pink-light:#FF9EB5; --pink-deep:#E0567A; --pink-bg:#FFE9EF;
     --ink:#3A2A33; --sub:#8A7580; --line:#F5DEE6;
-    --card:#FFFFFF; --bg:#FFF8F6;
-    --s0:#C9B8E8; --s0-bg:#F1ECFB;
-    --s1:#F5B98E; --s1-bg:#FFF1E6;
-    --s2:#F08CAE; --s2-bg:#FFEBF2;
-    --s3:#E8697B; --s3-bg:#FFE7E6;
+    --card:#FFFFFF; --bg:#FFF8F6; --tip-bg:#FAF3EC;
+    --s0:#E0567A; --s0-bg:#FAF3EC;
+    --s1:#E0567A; --s1-bg:#FAF3EC;
+    --s2:#E0567A; --s2-bg:#FAF3EC;
+    --s3:#E0567A; --s3-bg:#FAF3EC;
     --radius:18px;
     --shadow:0 2px 12px rgba(224,86,122,0.09);
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
@@ -54,25 +56,25 @@
   header.hero .logo{width:104px; margin:0 auto 6px;}
   header.hero .badge{
     display:inline-block; background:#fff; border:1px solid rgba(224,86,122,0.32);
-    border-radius:999px; padding:6px 15px; font-size:13px; color:var(--pink-deep);
+    border-radius:999px; padding:6px 15px; font-size:16px; color:var(--pink-deep);
     margin-bottom:13px; font-weight:700;
   }
   header.hero h1{
     font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
-    font-size:clamp(21px,5vw,31px); margin:0 0 12px; line-height:1.5;
+    font-size:clamp(24px,5vw,34px); margin:0 0 12px; line-height:1.5;
   }
   header.hero p{
-    font-family:'Jalnan',-apple-system,sans-serif; color:#6B4E58; font-size:14px;
+    font-family:'Jalnan',-apple-system,sans-serif; color:#6B4E58; font-size:17px;
     line-height:1.85; margin:0 auto 18px; max-width:480px;
   }
   header.hero .hero-actions{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;}
-  header.hero .insta{
-    display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700;
+  .insta{
+    display:inline-flex; align-items:center; gap:6px; font-size:17px; font-weight:700;
     color:#fff; text-decoration:none; background:var(--pink-deep);
     padding:9px 17px; border-radius:999px;
   }
   header.hero .share-btn{
-    display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700;
+    display:inline-flex; align-items:center; gap:6px; font-size:17px; font-weight:700;
     color:#3A2A33; background:#FEE500; border:none;
     padding:9px 17px; border-radius:999px; cursor:pointer; font-family:inherit;
   }
@@ -82,75 +84,161 @@
   .intro{max-width:640px; margin:0 auto; padding:28px 18px 4px;}
   .intro-box{
     background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:20px 22px; font-size:14.5px; color:#5A4650; line-height:1.9;
+    padding:20px 22px; font-size:17.5px; color:#5A4650; line-height:1.9;
   }
   .intro-box strong{color:var(--pink-deep);}
-  .toc{
-    display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;
-  }
-  .toc a{
-    font-size:12.5px; font-weight:700; color:var(--pink-deep); text-decoration:none;
-    background:var(--pink-bg); border-radius:999px; padding:6px 13px;
-  }
-  .toc a:hover{background:var(--pink-light); color:#fff;}
 
-  /* ── 타임라인 ── */
-  .timeline{position:relative; padding:36px 0 4px;}
-  .timeline::before{
-    content:''; position:absolute; left:23px; top:8px; bottom:40px; width:2px;
-    background:linear-gradient(180deg,var(--s0),var(--s1),var(--s2),var(--s3));
+  /* ── 번호 카드형 이동 메뉴 ── */
+  .step-nav{display:flex; flex-direction:column; gap:14px; margin-top:22px;}
+  .step-nav-meta{
+    font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    font-size:25px; color:var(--pink-deep); text-align:center; line-height:1.4;
+    background:var(--pink-bg); border-radius:16px; padding:16px 18px;
+    margin-top:28px; margin-bottom:18px;
   }
-  .step{position:relative; padding-left:62px; margin-bottom:44px; scroll-margin-top:20px;}
+  .step-nav-card{
+    display:block; background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:20px 22px; text-decoration:none; color:inherit;
+    transition:transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .step-nav-card:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(224,86,122,.14); border-color:var(--pink-light);}
+  .step-nav-num{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    background:var(--pink-bg); color:var(--pink-deep);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px;
+  }
+  .step-nav-row{display:flex; align-items:flex-start; gap:14px;}
+  .step-nav-body{flex:1; min-width:0;}
+  .step-nav-title{
+    font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    font-size:21px; color:var(--ink); margin:0 0 6px; display:flex; align-items:center; gap:6px;
+  }
+  .step-nav-desc{font-size:16px; color:var(--sub); line-height:1.75; margin:0;}
+  .step-nav-desc b{color:var(--pink-deep);}
+
+  /* ── 목록 / 상세 화면 전환 ── */
+  #detailView{display:none;}
+  #detailView.open{display:block;}
+  .step{display:none;}
+  .step.open{display:block;}
+  .detail-topbar{
+    max-width:640px; margin:0 auto; padding:18px 18px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .back-btn{
+    display:inline-flex; align-items:center; gap:6px; background:#fff; border:1.5px solid var(--line);
+    border-radius:999px; padding:9px 17px; font-size:16.5px; font-weight:700; color:var(--pink-deep);
+    cursor:pointer; font-family:inherit; transition:all .15s;
+  }
+  .back-btn:hover{background:var(--pink-bg); border-color:var(--pink-light);}
+  .detail-dots{display:flex; gap:6px;}
+  .detail-dots span{width:7px; height:7px; border-radius:50%; background:var(--line);}
+  .detail-dots span.on{background:var(--pink);}
+  .step-jump{display:flex; gap:8px; margin-top:22px;}
+  .step-jump button{
+    flex:1; border:1.5px solid var(--line); background:#fff; color:var(--pink-deep);
+    border-radius:14px; padding:14px 10px; font-size:16.5px; font-weight:800;
+    cursor:pointer; font-family:inherit; transition:all .15s;
+  }
+  .step-jump button:hover{background:var(--pink-bg); border-color:var(--pink-light);}
+  .step-jump button.main{background:var(--pink); border-color:var(--pink); color:#fff;}
+
+  .timeline{position:relative; padding:8px 0 4px;}
+  .step{position:relative; margin-bottom:48px; scroll-margin-top:20px;}
   .step-num{
-    position:absolute; left:0; top:0; width:48px; height:48px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center; color:#fff;
-    font-family:'Jalnan',-apple-system,sans-serif; font-size:18px; box-shadow:0 3px 8px rgba(0,0,0,0.1);
+    font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    font-size:46px; line-height:1; color:var(--pink-deep); margin-bottom:6px;
   }
-  .step.s0 .step-num{background:var(--s0);}
-  .step.s1 .step-num{background:var(--s1);}
-  .step.s2 .step-num{background:var(--s2);}
-  .step.s3 .step-num{background:var(--s3);}
   .step-tag{
-    display:inline-block; font-size:11.5px; font-weight:800; padding:4px 12px;
-    border-radius:999px; color:#fff; margin-bottom:9px;
+    display:inline-block; font-size:14px; font-weight:800; color:var(--pink-deep);
+    background:var(--pink-bg); border-radius:999px; padding:5px 13px; margin-bottom:10px;
   }
-  .step.s0 .step-tag{background:var(--s0);}
-  .step.s1 .step-tag{background:var(--s1);}
-  .step.s2 .step-tag{background:var(--s2);}
-  .step.s3 .step-tag{background:var(--s3);}
   .step h2{
     font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
-    font-size:19px; margin:0 0 8px;
+    font-size:23px; margin:0 0 14px; padding-bottom:14px; border-bottom:1.5px solid var(--line);
   }
-  .step-summary{font-size:13.5px; color:var(--sub); margin:0 0 16px; line-height:1.85;}
-  .step-summary b{color:var(--ink);}
+  .step-summary{font-size:16.5px; color:var(--sub); margin:0 0 16px; line-height:1.85;}
+  .step-summary b{color:var(--pink-deep);}
 
   .change-box{
-    border-radius:14px; padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.85;
+    border-top:1.5px solid var(--line); padding:16px 0 0; margin:20px 0 0;
+    font-size:16px; line-height:1.85; color:var(--ink);
   }
-  .step.s0 .change-box{background:var(--s0-bg); color:#5D4E80;}
-  .step.s1 .change-box{background:var(--s1-bg); color:#8A5B3A;}
-  .step.s2 .change-box{background:var(--s2-bg); color:#8A4F63;}
-  .step.s3 .change-box{background:var(--s3-bg); color:#8A3F49;}
-  .change-box b{display:block; font-size:12.5px; margin-bottom:5px;}
+  .change-box b:first-child{
+    display:block; font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    color:var(--pink-deep); font-size:17.5px; margin-bottom:6px;
+  }
+  span.gap{display:block; height:0; margin-top:5px;}
 
   .keep-note{
-    font-size:12.5px; color:var(--sub); background:#FAFAFA; border:1px dashed var(--line);
-    border-radius:12px; padding:11px 14px; margin:14px 0;
+    font-size:15.5px; color:var(--sub); background:none; border:none;
+    border-top:1.5px solid var(--line); border-radius:0; padding:14px 0 0; margin:18px 0 0;
   }
-  .keep-note b{color:#6B5A62;}
+  .keep-note b:first-child{font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal; font-size:17.5px; color:var(--pink-deep); display:block; margin-bottom:4px;}
 
   .note{
-    background:var(--pink-bg); border-radius:13px; padding:14px 16px; margin-top:14px;
-    font-size:12.5px; line-height:1.85; color:#8A5B6B;
+    background:none; border-radius:0; padding:0; margin-top:20px;
+    font-size:15.5px; line-height:1.85; color:var(--ink);
   }
-  .note b{display:block; color:var(--pink-deep); margin-bottom:4px;}
+  .note b:first-child{
+    display:block; font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    color:var(--pink-deep); margin-bottom:6px; font-size:18px;
+  }
+
+  .quote-box{
+    border-left:none; padding:0; margin:16px 0;
+    font-size:17px; font-style:normal; font-weight:700; line-height:1.7; color:var(--ink);
+  }
+  .quote-box b{color:var(--pink-deep);}
+
+  /* ── 원문 서술 블록 (요약 없이 그대로) ── */
+  .sub-block{margin:26px 0 0; padding-top:26px; border-top:1.5px solid var(--line);}
+  .sub-block:first-of-type{margin-top:20px; padding-top:0; border-top:none;}
+  .sub-head{
+    font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    font-size:20px; color:var(--ink); margin:0 0 12px; line-height:1.5;
+    display:inline; padding:1px 3px;
+    background-image:linear-gradient(var(--pink-light), var(--pink-light));
+    background-repeat:no-repeat; background-size:100% 50%; background-position:0 100%;
+    -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  }
+  .sub-text{font-size:16px; line-height:1.9; color:#5A4650; margin:0 0 10px;}
+  .sub-text:last-child{margin-bottom:0;}
+  .sub-text b{color:var(--pink-deep);}
+  .sub-list{
+    list-style:none; margin:0 0 14px; padding:17px 19px;
+    background:var(--pink-bg); border-radius:16px;
+  }
+  .sub-list li{
+    position:relative; padding-left:17px;
+    font-size:15.5px; line-height:1.85; color:var(--ink); margin-bottom:10px;
+  }
+  .sub-list li::before{content:'•'; position:absolute; left:0; top:0; color:var(--pink-deep); font-weight:800;}
+  .sub-list li:last-child{margin-bottom:0;}
+  .sub-list.nested{
+    background:none; padding:0; border-radius:0; margin:8px 0 0;
+  }
+  .sub-list.nested li{margin-bottom:6px;}
+  .sub-list.nested li::before{content:'◦';}
+  .point-box{
+    background:var(--tip-bg); border:none; border-radius:16px;
+    padding:18px 19px; margin-top:16px; font-size:15.5px; line-height:1.9; color:var(--ink);
+  }
+  .point-box > b{
+    display:block; font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    color:var(--pink-deep); margin-bottom:12px; font-size:18px;
+  }
+  .point-box ul{list-style:none; margin:0; padding:0;}
+  .point-box li{position:relative; padding-left:16px; margin-bottom:10px;}
+  .point-box li::before{content:'·'; position:absolute; left:0; top:0; color:var(--pink-deep); font-weight:800;}
+  .point-box li:last-child{margin-bottom:0;}
+  .sub-block .item-list{margin:12px 0 0;}
 
   /* ── 미니 교재 카드 ── */
   .item-list{display:flex; flex-direction:column; gap:12px; margin:14px 0;}
   .item{
     display:flex; gap:13px; background:var(--card); border:1px solid var(--line);
-    border-radius:14px; padding:12px; box-shadow:var(--shadow); text-decoration:none; color:inherit;
+    border-radius:14px; padding:12px; text-decoration:none; color:inherit;
     transition:transform .15s;
   }
   .item:hover{transform:translateY(-2px);}
@@ -159,12 +247,15 @@
     background:#FBEAEE; padding:5px;
   }
   .item-cover img{width:100%; height:100%; object-fit:contain;}
+  .item-cover.emoji{
+    display:flex; align-items:center; justify-content:center; font-size:31px; padding:0;
+  }
   .item-body{flex:1; min-width:0;}
-  .item-sub{font-size:10.5px; font-weight:800; color:var(--pink-deep);}
-  .item-name{font-size:13.5px; font-weight:700; margin:2px 0 4px; line-height:1.4;}
-  .item-role{font-size:11.5px; color:var(--sub); line-height:1.6;}
+  .item-sub{font-size:13.5px; font-weight:800; color:var(--pink-deep);}
+  .item-name{font-size:16.5px; font-weight:700; margin:2px 0 4px; line-height:1.4;}
+  .item-role{font-size:14.5px; color:var(--sub); line-height:1.6;}
   .item-when{
-    display:inline-block; margin-top:6px; font-size:10.5px; font-weight:800;
+    display:inline-block; margin-top:6px; font-size:13.5px; font-weight:800;
     color:#B8860B; background:#FFF9E6; border-radius:8px; padding:3px 9px;
   }
   .item.lk-none .item-when{color:var(--pink-deep); background:var(--pink-bg);}
@@ -172,19 +263,22 @@
   /* ── 클로징 ── */
   .closing{max-width:640px; margin:0 auto; padding:8px 18px 0;}
   .voice{
-    background:linear-gradient(135deg,#FFE9EF,#FFF1E6); border:1.5px solid #FFC6D6;
-    border-radius:var(--radius); padding:20px 22px; margin-top:8px;
-    font-size:14px; line-height:1.95; color:#8A5B6B;
+    background:var(--tip-bg); border:none;
+    border-radius:var(--radius); padding:22px 22px; margin-top:8px;
+    font-size:17px; line-height:1.95; color:var(--ink);
   }
-  .voice b{display:block; color:var(--pink-deep); font-size:15px; margin-bottom:8px;}
+  .voice b:first-child{
+    display:block; font-family:'Jalnan',-apple-system,sans-serif; font-weight:normal;
+    color:var(--pink-deep); font-size:21px; margin-bottom:8px;
+  }
 
   footer{
-    text-align:center; padding:40px 18px 56px; color:var(--sub); font-size:12.5px;
+    text-align:center; padding:40px 18px 56px; color:var(--sub); font-size:15.5px;
     border-top:1px solid var(--line); margin-top:34px; line-height:1.8;
   }
   footer .warn{
     background:var(--pink-bg); color:var(--pink-deep); padding:13px 18px;
-    border-radius:12px; display:inline-block; margin-bottom:13px; font-size:12.5px;
+    border-radius:12px; display:inline-block; margin-bottom:13px; font-size:15.5px;
   }
   footer a{color:var(--pink-deep); font-weight:700; text-decoration:none;}
   footer a:hover{text-decoration:underline;}
@@ -196,194 +290,370 @@
   <img class="logo" src="character.png" alt="투빈맘 캐릭터">
   <span class="badge">🇺🇸 투빈맘's 엄마표영어 자료나눔</span>
   <h1>투빈맘's 엄마표영어💖<br>로드맵 (초1 성빈)</h1>
-  <p>영어만 쏙 뽑아서 시기별로 정리했어요.<br>7세 하반기부터 초1 여름방학까지, 실제로 하고 있는 루틴 그대로예요</p>
+  <p>7세 하반기부터 초1 여름방학까지,<br>실제로 하고 있는 루틴 그대로예요</p>
   <div class="hero-actions">
     <a class="insta" href="https://www.instagram.com/2bin_mom/?hl=ko" target="_blank" rel="noopener">📸 @2bin_mom 인스타 보러가기</a>
     <button type="button" class="share-btn" onclick="shareKakao(this)">💬 카톡으로 공유</button>
   </div>
 </header>
 
-<div class="intro">
+<div class="intro" id="landingView">
   <div class="intro-box">
-    안녕하세요 :) <strong>투빈맘</strong>입니다.💖<br><br>
-    성빈이는 형아가 처음 영어를 시작했을 때부터 옆에서 함께 영어 영상을 보며 <strong>자연스럽게 노출</strong>했어요. (5세 11월부터✨)<br><br>
-    6~7세에는 어린이집을 다니다 보니 영어 영상은 하루 평균 1시간 정도만 꾸준히 보여줬고, <strong>본격적인 영어 공부는 초1이 되어 파닉스부터</strong> 시작했습니다.<br><br>
-    어린이집을 다녔던 터라 초1 입학 당시에도 알파벳을 헷갈릴 정도였어요.😅<br><br>
-    형아보다 영어 노출을 더 일찍 시작할 수도 있었지만, 첫째 엄마표 영어를 해보니 <strong>초1에 시작해도 늦지 않다는 확신</strong>이 생겼고, 무엇보다 형아 엄마표를 하느라 제 체력도... 이미 방전이었답니다.😂<br><br>
-    그래서 성빈이는 영어 영상 노출만 꾸준히 이어가다가, <strong>초1부터 차근차근</strong> 시작했어요.<br><br>
+    안녕하세요 :) <strong>투빈맘</strong>입니다.💖<br><span class="gap"></span>
+    성빈이는 형아가 처음 영어를 시작했을 때부터 옆에서 함께 영어 영상을 보며 <strong>자연스럽게 노출</strong>했어요. (5세 11월부터✨)<br><span class="gap"></span>
+    6~7세에는 어린이집을 다니다 보니 영어 영상은 하루 평균 1시간 정도만 꾸준히 보여줬고, <strong>본격적인 영어 공부는 초1이 되어 파닉스부터</strong> 시작했습니다.<br><span class="gap"></span>
+    어린이집을 다녔던 터라 초1 입학 당시에도 알파벳을 헷갈릴 정도였어요.😅<br><span class="gap"></span>
+    형아보다 영어 노출을 더 일찍 시작할 수도 있었지만, 첫째 엄마표 영어를 해보니 <strong>초1에 시작해도 늦지 않다는 확신</strong>이 생겼고, 무엇보다 형아 엄마표를 하느라 제 체력도... 이미 방전이었답니다.😂<br><span class="gap"></span>
+    그래서 성빈이는 영어 영상 노출만 꾸준히 이어가다가, <strong>초1부터 차근차근</strong> 시작했어요.<br><span class="gap"></span>
     이번 자료에는 성빈이의 ~초1 여름방학까지 <strong>실제 진행 순서를 한눈에</strong> 볼 수 있도록 정리했습니다💖
-    <div class="toc">
-      <a href="#step0">7세 하반기</a>
-      <a href="#step1">초1 1학기 (3~5월)</a>
-      <a href="#step2">초1 1학기 (5월~)</a>
-      <a href="#step3">여름방학</a>
-    </div>
+  </div>
+
+  <div class="step-nav-meta">시기를 누르면 자세히 볼 수 있어요</div>
+  <div class="step-nav">
+    <a class="step-nav-card" href="#step0" onclick="showDetail('step0', event)">
+      <div class="step-nav-row">
+        <div class="step-nav-num">1</div>
+        <div class="step-nav-body">
+          <div class="step-nav-title">7세 하반기</div>
+          <p class="step-nav-desc">아직은 '공부'보다 '노출'.<br>미국식 공교육 AI 앱 <b>유즈프렙</b>으로 부담 없이 노출만 이어간 시기예요.</p>
+        </div>
+      </div>
+    </a>
+    <a class="step-nav-card" href="#step1" onclick="showDetail('step1', event)">
+      <div class="step-nav-row">
+        <div class="step-nav-num">2</div>
+        <div class="step-nav-body">
+          <div class="step-nav-title">초1 1학기 (3~5월)</div>
+          <p class="step-nav-desc">영어 루틴, 처음 만들기.<br>파닉스로 소리를 익히고 <b>집중듣기·영상 노출</b>을 매일 조금씩 병행한 시기예요.</p>
+        </div>
+      </div>
+    </a>
+    <a class="step-nav-card" href="#step2" onclick="showDetail('step2', event)">
+      <div class="step-nav-row">
+        <div class="step-nav-num">3</div>
+        <div class="step-nav-body">
+          <div class="step-nav-title">초1 1학기 (5월~)</div>
+          <p class="step-nav-desc">한 단계씩 늘려가는 시기.<br>ORT를 레벨업하고 <b>화상영어 AI(다이노)</b>를 새로 추가했어요.</p>
+        </div>
+      </div>
+    </a>
+    <a class="step-nav-card" href="#step3" onclick="showDetail('step3', event)">
+      <div class="step-nav-row">
+        <div class="step-nav-num">4</div>
+        <div class="step-nav-body">
+          <div class="step-nav-title">여름방학</div>
+          <p class="step-nav-desc">파닉스 마무리, 사이트워드로 전환.<br><b>집중듣기·낭독·라이팅</b>까지 확장한 시기예요.</p>
+        </div>
+      </div>
+    </a>
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="detailView">
+  <div class="detail-topbar">
+    <button type="button" class="back-btn" onclick="showLanding(event)">← 목록으로</button>
+    <div class="detail-dots" id="detailDots">
+      <span data-s="step0"></span><span data-s="step1"></span><span data-s="step2"></span><span data-s="step3"></span>
+    </div>
+  </div>
   <div class="timeline">
 
     <!-- STEP 0 · 7세 하반기 -->
     <section class="step s0" id="step0">
-      <div class="step-num">0</div>
-      <span class="step-tag">STEP 0 · 7세 하반기</span>
+      <div class="step-num">01</div>
+      <span class="step-tag">STEP 1 · 7세 하반기</span>
       <h2>아직은 '공부'보다 '노출'</h2>
-      <p class="step-summary">이 시기엔 정해진 교재나 루틴 없이, <b>영어를 캐주얼하게 접하는 정도</b>였어요. 초1부터 본격적으로 시작할 예정이라 워밍업 느낌으로 진행했어요.</p>
-      <div class="item-list">
-        <div class="item lk-none">
-          <div class="item-body">
-            <div class="item-sub">영어 노출 (AI 앱)</div>
-            <div class="item-name">유즈프렙</div>
-            <div class="item-role">미국식 공교육 커리큘럼을 따라가는 AI 학습 앱. 아이패드만 건네주면 AI가 난이도를 알아서 조절해주고, 30분 되면 자동 종료돼요.</div>
-            <span class="item-when">아이패드로 가볍게</span>
+      <p class="quote-box">엄마 편하고, 아이는 재밌고!<br>초1 되면 본격적으로 엄마표 영어 들어갈 예정입니다! ✨</p>
+
+      <div class="sub-block">
+        <div class="sub-head">현재 영어 노출 루틴</div>
+        <ul class="sub-list">
+          <li><b>미국식 공교육, 유즈프렙</b>
+            <ul class="sub-list nested">
+              <li>아이패드만 건네주면 → AI 난이도 조절</li>
+              <li>30분 자동 종료 시스템</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="item-list">
+          <div class="item lk-none">
+            <div class="item-body">
+              <div class="item-sub">영어 노출 (AI 앱)</div>
+              <div class="item-name">유즈프렙</div>
+              <div class="item-role">미국식 공교육 커리큘럼을 따라가는 AI 학습 앱. 아이패드만 건네주면 AI가 난이도를 알아서 조절해주고, 30분 되면 자동 종료돼요.</div>
+              <span class="item-when">아이패드로 가볍게</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="note"><b>💬 투빈맘 한 줄 기록</b>엄마는 편하고 아이는 재밌는 정도로만 노출시켰어요. 진짜 시작은 초1부터라고 생각하고 부담 없이 흘려보냈던 시기예요.</div>
+
+      <div class="step-jump">
+        <button type="button" class="main" onclick="showDetail('step1', event)">초1 1학기(3~5월) 보기 →</button>
+      </div>
     </section>
 
     <!-- STEP 1 · 초1 1학기 3~5월 -->
     <section class="step s1" id="step1">
-      <div class="step-num">1</div>
-      <span class="step-tag">STEP 1 · 초1 1학기 (3~5월)</span>
+      <div class="step-num">02</div>
+      <span class="step-tag">STEP 2 · 초1 1학기 (3~5월)</span>
       <h2>영어 루틴, 처음 만들기</h2>
       <p class="step-summary">입학 후 3월엔 학교 적응이 우선이라 쉬어가고, <b>4월부터 천천히 영어 루틴을 세웠어요.</b> 파닉스로 소리를 익히고, 집중듣기·영상을 매일 조금씩 병행하는 시기예요.</p>
-      <div class="item-list">
-        <a class="item lk-coupang" href="https://link.coupang.com/a/euitd9" target="_blank" rel="noopener nofollow sponsored">
-          <div class="item-cover"><img src="images/171f78fe.png" alt="스마트 파닉스 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">파닉스</div>
-            <div class="item-name">스마트 파닉스</div>
-            <div class="item-role">읽기 기초를 다지는 소리 연결 훈련. 직접 가르치기보다 인강으로 진행해요.</div>
-            <span class="item-when">하루 1챕터 · 30분</span>
-          </div>
-        </a>
-        <div class="item lk-none">
-          <div class="item-cover"><img src="images/5012ad5b.jpg" alt="ORT 1~3단계 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">집중듣기</div>
-            <div class="item-name">ORT 1~3단계</div>
-            <div class="item-role">집듣 첫 시작! 엄마와 손가락으로 문장을 짚어가며, 해석보다 소리 흐름 익히기에 집중했어요.</div>
-            <span class="item-when">하루 3권</span>
+
+      <div class="sub-block">
+        <div class="sub-head">영어 (아침 마무리)</div>
+        <ul class="sub-list">
+          <li><b>집중듣기</b> — 하루 3권 · ORT 1~3단계</li>
+        </ul>
+        <div class="item-list">
+          <div class="item lk-none">
+            <div class="item-cover"><img src="images/5012ad5b.jpg" alt="ORT 1~3단계 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">집중듣기</div>
+              <div class="item-name">ORT 1~3단계</div>
+              <div class="item-role">집듣 첫 시작! 엄마와 손가락으로 문장을 짚어가며, 해석보다 소리 흐름 익히기에 집중했어요.</div>
+              <span class="item-when">하루 3권</span>
+            </div>
           </div>
         </div>
-        <a class="item lk-insta" href="https://www.instagram.com/reel/DbXI6fzJNiH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">
-          <div class="item-cover"><img src="images/1a2843db.jpg" alt="영어 영상 노출 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">영어 노출</div>
-            <div class="item-name">영어 영상 노출</div>
-            <div class="item-role">식사 시간을 활용해 자연스럽게 노출. '공부'가 아니라 환경으로 만드는 게 핵심이에요.</div>
-            <span class="item-when">하루 30~60분</span>
-          </div>
-        </a>
+        <div class="point-box">
+          <b>루틴 포인트</b>
+          <ul>
+            <li>집듣은 처음이라 → <b>엄마와 함께 손가락 짚어가며 진행</b></li>
+            <li>해석보다 → <b>소리 흐름 익히기</b></li>
+            <li>짧게라도 매일 → <b>영어 노출 유지</b></li>
+          </ul>
+        </div>
       </div>
-      <div class="note"><b>💬 투빈맘 한 줄 기록</b>집듣할 땐 항상 손가락으로 따라가며 듣기 훈련을 했어요. 완벽주의가 있는 아이라 화상영어는 몇 번 하다 멈췄어요 — 영어를 어느 정도 배운 뒤에 다시 시도하는 게 낫다고 판단했어요.</div>
+
+      <div class="sub-block">
+        <div class="sub-head">영어 (저녁 루틴)</div>
+        <ul class="sub-list">
+          <li><b>파닉스</b> — 스마트 파닉스(인강) · 하루 1챕터, 30분</li>
+          <li><b>영어 영상</b> — 식사 시간 활용 · 하루 30분~60분</li>
+        </ul>
+        <div class="item-list">
+          <a class="item lk-coupang" href="https://link.coupang.com/a/euitd9" target="_blank" rel="noopener nofollow sponsored">
+            <div class="item-cover"><img src="images/171f78fe.png" alt="스마트 파닉스 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">파닉스</div>
+              <div class="item-name">스마트 파닉스</div>
+              <div class="item-role">읽기 기초를 다지는 소리 연결 훈련. 직접 가르치기보다 인강으로 진행해요.</div>
+              <span class="item-when">하루 1챕터 · 30분</span>
+            </div>
+          </a>
+          <a class="item lk-insta" href="https://www.instagram.com/reel/DbXI6fzJNiH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">
+            <div class="item-cover"><img src="images/1a2843db.jpg" alt="영어 영상 노출 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">영어 노출</div>
+              <div class="item-name">영어 영상 노출</div>
+              <div class="item-role">식사 시간을 활용해 자연스럽게 노출. '공부'가 아니라 환경으로 만드는 게 핵심이에요.</div>
+              <span class="item-when">하루 30~60분</span>
+            </div>
+          </a>
+        </div>
+        <div class="point-box">
+          <b>영어 루틴 핵심</b>
+          <ul>
+            <li>파닉스는 직접 가르치기보다 → <b>인강 활용</b><br>성향상 이게 훨씬 편해서 만족도 높아요</li>
+            <li>스마트 파닉스는<br><b>영어학원에서도 많이 사용하는 교재</b>라 무난한 편</li>
+            <li>영어 영상은 따로 시간 빼지 않고<br><b>밥 먹으면서 자연스럽게 노출</b></li>
+            <li>완벽주의가 강한 아이라, <b>화상영어는 몇 번 하다가 멈춤</b><br>영어를 어느 정도 배우고 하는 게 좋다고 판단</li>
+          </ul>
+        </div>
+        <div class="note">
+          <b>투빈맘 한 줄 기록</b>
+          집듣할 땐 항상 손가락으로 따라가며 듣기 훈련을 했어요.<br><span class="gap"></span>
+          완벽주의가 있는 아이라 화상영어는 몇 번 하다 멈췄어요<br>
+          — 영어를 어느 정도 배운 뒤에 다시 시도하는 게 낫다고 판단했어요.
+        </div>
+      </div>
+
+      <div class="step-jump">
+        <button type="button" onclick="showDetail('step0', event)">← 7세 하반기</button>
+        <button type="button" class="main" onclick="showDetail('step2', event)">초1 1학기(5월~) 보기 →</button>
+      </div>
     </section>
 
     <!-- STEP 2 · 초1 1학기 5월~ -->
     <section class="step s2" id="step2">
-      <div class="step-num">2</div>
-      <span class="step-tag">STEP 2 · 초1 1학기 (5월~)</span>
+      <div class="step-num">03</div>
+      <span class="step-tag">STEP 3 · 초1 1학기 (5월~)</span>
       <h2>한 단계씩 늘려가는 시기</h2>
       <p class="step-summary">루틴이 자리 잡으면서 <b>파닉스 빈도는 줄이고, 집중듣기 레벨은 올리고, 화상영어 AI를 새로 추가</b>했어요. 완벽주의 성향 때문에 실전 화상영어 대신 AI로 부담을 덜었어요.</p>
-      <div class="item-list">
-        <a class="item lk-coupang" href="https://link.coupang.com/a/ehB348jnzg" target="_blank" rel="noopener nofollow sponsored">
-          <div class="item-cover"><img src="images/b715950e.png" alt="스마트 파닉스 인강 활용 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">파닉스 · 인강</div>
-            <div class="item-name">스마트 파닉스 (인강 활용)</div>
-            <div class="item-role">매일 하던 파닉스를 주 3회로 조정. 학원에서도 많이 쓰는 교재라 무난해요.</div>
-            <span class="item-when">주 3회 · 1챕터 30분</span>
-          </div>
-        </a>
-        <a class="item lk-site" href="https://kr.dinoai.ai/website/landingpage/login/?channel=Bf8Dc5m" target="_blank" rel="noopener">
-          <div class="item-cover"><img src="images/9f019992.jpg" alt="다이노 AI 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">화상영어 · AI 복습</div>
-            <div class="item-name">다이노 AI (화상영어 대체)</div>
-            <div class="item-role">아직 실전 화상영어는 부담스러워하는 시기라, AI와 듣고 말하며 습관을 만드는 용도로 딱 좋아요.<br><span style="color:var(--pink-deep); font-weight:700;">할인 코드: 1년 DINO8584 / 1개월 DINO3012</span></div>
-            <span class="item-when">주 2회 · 1강 30분</span>
-          </div>
-        </a>
-        <div class="item lk-none">
-          <div class="item-cover"><img src="images/5012ad5b.jpg" alt="ORT 3~4단계 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">집중듣기</div>
-            <div class="item-name">ORT 3~4단계</div>
-            <div class="item-role">1~3단계에서 한 단계 올라온 시기. 여전히 해석보다 흐름으로 이해하는 데 집중해요.</div>
-            <span class="item-when">하루 3권</span>
+
+      <div class="sub-block">
+        <div class="sub-head">영어 (아침 마무리)</div>
+        <ul class="sub-list">
+          <li><b>집중듣기</b> — 하루 3권 · ORT 3~4단계</li>
+        </ul>
+        <div class="item-list">
+          <div class="item lk-none">
+            <div class="item-cover"><img src="images/5012ad5b.jpg" alt="ORT 3~4단계 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">집중듣기</div>
+              <div class="item-name">ORT 3~4단계</div>
+              <div class="item-role">1~3단계에서 한 단계 올라온 시기. 여전히 해석보다 흐름으로 이해하는 데 집중해요.</div>
+              <span class="item-when">하루 3권</span>
+            </div>
           </div>
         </div>
+        <div class="point-box">
+          <b>루틴 포인트</b>
+          <ul>
+            <li>집듣은 처음이라 → <b>엄마와 함께 손가락 짚어가며 진행</b></li>
+            <li>해석보다 → <b>소리 흐름 익히기</b></li>
+            <li>짧게라도 매일 → <b>영어 노출 유지</b></li>
+          </ul>
+        </div>
       </div>
-      <div class="change-box"><b>📈 뭐가 바뀌었나요</b>파닉스 매일 → 주 3회로 조정 · ORT 1~3단계 → 3~4단계로 레벨업 · 화상영어 AI(다이노) 새로 추가</div>
-      <div class="keep-note"><b>계속 이어간 것</b> · 영어 영상 노출은 그대로 하루 30~60분씩 유지했어요.</div>
+
+      <div class="sub-block">
+        <div class="sub-head">영어 (저녁 루틴)</div>
+        <ul class="sub-list">
+          <li><b>파닉스</b> — 스마트 파닉스(인강) · 주 3회, 1챕터 30분</li>
+          <li><b>화상영어 AI</b> — 다이노 AI 활용 · 주 2회, 1강 30분</li>
+          <li><b>영어 영상</b> — 식사 시간 활용 · 하루 30분~60분</li>
+        </ul>
+        <div class="item-list">
+          <a class="item lk-coupang" href="https://link.coupang.com/a/ehB348jnzg" target="_blank" rel="noopener nofollow sponsored">
+            <div class="item-cover"><img src="images/b715950e.png" alt="스마트 파닉스 인강 활용 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">파닉스 · 인강</div>
+              <div class="item-name">스마트 파닉스 (인강 활용)</div>
+              <div class="item-role">매일 하던 파닉스를 주 3회로 조정. 학원에서도 많이 쓰는 교재라 무난해요.</div>
+              <span class="item-when">주 3회 · 1챕터 30분</span>
+            </div>
+          </a>
+          <a class="item lk-site" href="https://kr.dinoai.ai/website/landingpage/login/?channel=Bf8Dc5m" target="_blank" rel="noopener">
+            <div class="item-cover"><img src="images/9f019992.jpg" alt="다이노 AI 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">화상영어 · AI 복습</div>
+              <div class="item-name">다이노 AI (화상영어 대체)</div>
+              <div class="item-role">아직 실전 화상영어는 부담스러워하는 시기라, AI와 듣고 말하며 습관을 만드는 용도로 딱 좋아요.<br><b style="color:var(--pink-deep);">할인 코드: 1년 DINO8584 / 1개월 DINO3012</b></div>
+              <span class="item-when">주 2회 · 1강 30분</span>
+            </div>
+          </a>
+        </div>
+        <div class="point-box">
+          <b>영어 루틴 핵심</b>
+          <ul>
+            <li>파닉스는 직접 가르치기보다 → <b>인강 활용</b><br>성향상 이게 훨씬 편해서 만족도 높아요</li>
+            <li>스마트 파닉스는<br>영어학원에서도 많이 사용하는 교재라 무난한 편</li>
+            <li>화상영어는 아직 힘들어해 <b>화상영어 AI인 다이노 AI 활용 중</b><br>화상영어 대체로 딱 좋음!</li>
+            <li>영어 영상은 따로 시간 빼지 않고<br>밥 먹으면서 자연스럽게 노출</li>
+            <li>완벽주의가 강한 아이라, 화상영어는 몇 번 하다가 멈춤<br>영어를 어느 정도 배우고 하는 게 좋다고 판단</li>
+          </ul>
+        </div>
+        <div class="change-box"><b>뭐가 바뀌었나요</b>파닉스 매일 → 주 3회로 조정 · ORT 1~3단계 → 3~4단계로 레벨업 · 화상영어 AI(다이노) 새로 추가</div>
+        <div class="keep-note"><b>계속 이어간 것</b>영어 영상 노출은 그대로 하루 30~60분씩 유지했어요.</div>
+      </div>
+
+      <div class="step-jump">
+        <button type="button" onclick="showDetail('step1', event)">← 초1 1학기(3~5월)</button>
+        <button type="button" class="main" onclick="showDetail('step3', event)">여름방학 보기 →</button>
+      </div>
     </section>
 
     <!-- STEP 3 · 여름방학 -->
     <section class="step s3" id="step3">
-      <div class="step-num">3</div>
-      <span class="step-tag">STEP 3 · 여름방학</span>
+      <div class="step-num">04</div>
+      <span class="step-tag">STEP 4 · 여름방학</span>
       <h2>파닉스 마무리, 사이트워드로 전환</h2>
-      <p class="step-summary">여름방학부터 <b>파닉스를 마무리하고 사이트워드를 시작</b>했어요. 형아 경빈이 때 썼던 스콜라스틱 사이트워드를 그대로 활용하되, 집중듣기로 소리·글자를 연결하고 직접 낭독까지 하는 방식으로 진행 중이에요. 여기에 알파벳 라이팅까지 조금씩 추가했어요.</p>
-      <div class="item-list">
-        <a class="item lk-coupang" href="https://link.coupang.com/a/f4kPWwjpwy" target="_blank" rel="noopener nofollow sponsored">
-          <div class="item-cover"><img src="images/153b185a.jpg" alt="Scholastic 사이트워드 리더스 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">사이트워드</div>
-            <div class="item-name">Scholastic 사이트워드 리더스 (A~D)</div>
-            <div class="item-role">자주 나오는 단어부터 반복해서, 외우기보다 보고 듣고 읽으며 자연스럽게 익혀요.</div>
-            <span class="item-when">하루 3권 (집중듣기)</span>
+      <p class="step-summary">
+        영어는 1학기 동안 진행했던 파닉스를 마무리하고, 여름방학부터 사이트워드를 시작했어요.<br>
+        형아 경빈이 때 활용했던 스콜라스틱 사이트워드를 성빈이도 시작했는데요<br><span class="gap"></span>
+        이번에는 단순히 사이트워드만 익히는 것이 아니라<br>
+        <b>집중듣기로 소리와 글자를 연결</b>하고<br>
+        <b>직접 소리 내어 낭독하면서 반복되는 사이트워드를 익히는 방식</b>으로 진행하고 있어요.<br><span class="gap"></span>
+        여기에 알파벳을 줄에 맞춰 써보는 <b>기초 라이팅 연습</b>까지 조금씩 추가했답니다✏️
+      </p>
+
+      <div class="sub-block">
+        <div class="sub-head">여름방학 영어 루틴</div>
+        <ul class="sub-list">
+          <li><b>영어 영상</b> — 매일 60분 이상</li>
+          <li><b>화상영어</b> — 다이노 AI · 하루 1회씩</li>
+          <li><b>집중듣기</b> — 스콜라스틱 사이트워드 · 하루 3권씩</li>
+          <li><b>낭독하기</b> — 스콜라스틱 사이트워드 · 하루 1권씩</li>
+          <li><b>기초 라이팅</b> — 알파벳 연습 · 하루 1회씩</li>
+        </ul>
+        <div class="item-list">
+          <a class="item lk-coupang" href="https://link.coupang.com/a/f4kPWwjpwy" target="_blank" rel="noopener nofollow sponsored">
+            <div class="item-cover"><img src="images/153b185a.jpg" alt="Scholastic 사이트워드 리더스 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">사이트워드</div>
+              <div class="item-name">Scholastic 사이트워드 리더스 (A~D)</div>
+              <div class="item-role">자주 나오는 단어부터 반복해서, 외우기보다 보고 듣고 읽으며 자연스럽게 익혀요.</div>
+              <span class="item-when">하루 3권 (집중듣기)</span>
+            </div>
+          </a>
+          <a class="item lk-coupang" href="https://link.coupang.com/a/f4kPWwjpwy" target="_blank" rel="noopener nofollow sponsored">
+            <div class="item-cover"><img src="images/153b185a.jpg" alt="낭독 루틴 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">낭독</div>
+              <div class="item-name">낭독 루틴 (사이트워드 활용)</div>
+              <div class="item-role">집듣했던 책을 직접 소리 내어 읽으며 유창성을 키워요. 틀려도 멈추지 않고 끝까지 읽는 흐름을 유지해요.</div>
+              <span class="item-when">하루 1권</span>
+            </div>
+          </a>
+          <a class="item lk-site" href="https://kr.dinoai.ai/website/landingpage/login/?channel=Bf8Dc5m" target="_blank" rel="noopener">
+            <div class="item-cover"><img src="images/9f019992.jpg" alt="다이노 AI 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">화상영어 · AI 복습</div>
+              <div class="item-name">다이노 AI</div>
+              <div class="item-role">원어민 수업 시청 후 AI와 바로 복습. 화상영어가 아직 부담스러운 시기라 AI로 편하게 말하기 경험을 쌓아요.</div>
+              <span class="item-when">하루 1회씩</span>
+            </div>
+          </a>
+          <div class="item lk-none">
+            <div class="item-cover"><img src="images/7e0173a1.jpg" alt="알파벳 라이팅 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">라이팅</div>
+              <div class="item-name">알파벳 라이팅 연습</div>
+              <div class="item-role">줄에 맞춰 대문자·소문자를 쓰며 영어 쓰기 첫 발을 뗐어요. 많이 쓰기보다 짧게 반복하는 데 집중해요.</div>
+              <span class="item-when">하루 2장</span>
+            </div>
           </div>
-        </a>
-        <a class="item lk-coupang" href="https://link.coupang.com/a/f4kPWwjpwy" target="_blank" rel="noopener nofollow sponsored">
-          <div class="item-cover"><img src="images/153b185a.jpg" alt="낭독 루틴 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">낭독</div>
-            <div class="item-name">낭독 루틴 (사이트워드 활용)</div>
-            <div class="item-role">집듣했던 책을 직접 소리 내어 읽으며 유창성을 키워요. 틀려도 멈추지 않고 끝까지 읽는 흐름을 유지해요.</div>
-            <span class="item-when">하루 1권</span>
-          </div>
-        </a>
-        <div class="item lk-none">
-          <div class="item-cover"><img src="images/7e0173a1.jpg" alt="알파벳 라이팅 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">라이팅</div>
-            <div class="item-name">알파벳 라이팅 연습</div>
-            <div class="item-role">줄에 맞춰 대문자·소문자를 쓰며 영어 쓰기 첫 발을 뗐어요. 많이 쓰기보다 짧게 반복하는 데 집중해요.</div>
-            <span class="item-when">하루 2장</span>
-          </div>
+          <a class="item lk-insta" href="https://www.instagram.com/reel/DbXI6fzJNiH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">
+            <div class="item-cover"><img src="images/8392c25a.jpg" alt="영어 노출 영상 20선 표지" loading="lazy"></div>
+            <div class="item-body">
+              <div class="item-sub">영어 노출</div>
+              <div class="item-name">영어 노출 영상 20선</div>
+              <div class="item-role">투빈맘이 실제로 보여주는 영상 20선. 완벽 이해보다 소리와 표현에 익숙해지는 게 목표예요.</div>
+              <span class="item-when">매일 60분 이상~</span>
+            </div>
+          </a>
         </div>
-        <a class="item lk-insta" href="https://www.instagram.com/reel/DbXI6fzJNiH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">
-          <div class="item-cover"><img src="images/8392c25a.jpg" alt="영어 노출 영상 20선 표지" loading="lazy"></div>
-          <div class="item-body">
-            <div class="item-sub">영어 노출</div>
-            <div class="item-name">영어 노출 영상 20선</div>
-            <div class="item-role">투빈맘이 실제로 보여주는 영상 20선. 완벽 이해보다 소리와 표현에 익숙해지는 게 목표예요.</div>
-            <span class="item-when">매일 60분 이상~</span>
-          </div>
-        </a>
+        <div class="change-box"><b>뭐가 바뀌었나요</b>파닉스 마무리 → 사이트워드로 전환 · 낭독 루틴 새로 시작 (듣기 → 말하기로 연결) · 알파벳 라이팅 시작 (쓰기 첫 발) · 영상 노출 시간 30~60분 → 매일 60분 이상으로 확대</div>
+        <div class="keep-note"><b>계속 이어간 것</b>다이노 AI 화상영어는 하루 1회씩 계속 이어가고 있어요.</div>
       </div>
-      <div class="change-box"><b>📈 뭐가 바뀌었나요</b>파닉스 마무리 → 사이트워드로 전환 · 낭독 루틴 새로 시작 (듣기 → 말하기로 연결) · 알파벳 라이팅 시작 (쓰기 첫 발) · 영상 노출 시간 30~60분 → 매일 60분 이상으로 확대</div>
-      <div class="keep-note"><b>계속 이어간 것</b> · 다이노 AI 화상영어는 하루 1회씩 계속 이어가고 있어요.</div>
+
+      <div class="step-jump">
+        <button type="button" onclick="showDetail('step2', event)">← 초1 1학기(5월~)</button>
+        <button type="button" class="main" onclick="showLanding(event)">📋 전체 목록으로</button>
+      </div>
     </section>
 
   </div>
 </div>
 
-<div class="closing">
+<div class="closing" id="closingVoice">
   <div class="voice">
     <b>📘 투빈맘 한마디</b>
-    성빈이는 빠른 아이는 아니에요. 그래서 더더욱 <strong>"많이"보다 "끊기지 않는 루틴"</strong>, 이걸 가장 중요하게 보고 있어요 💖<br><br>
-    엄마표 영어는 정답이 있는 게 아니라, 아이에 맞게 계속 조율해가는 과정인 것 같아요. 처음부터 완벽하게 하려고 하기보다 하나씩 가볍게 시작해보시고, 아이 반응 보면서 조정해보시면 그걸로도 충분히 좋은 시작이라고 생각해요 😊
+    성빈이는 빠른 아이는 아니에요😊<br>
+    그래서 더더욱 "많이"보다, <b>"끊기지 않는 루틴"</b><br>
+    이걸 가장 중요하게 보고 있어요✨<br><span class="gap"></span>
+    엄마표 영어는 정답이 있는 게 아니라, 아이에 맞게 계속 조율해가는 과정인 것 같아요.<br>
+    처음부터 완벽하게 하려고 하기보다 하나씩 가볍게 시작해보시고, 아이 반응 보면서 조정해보시면 그걸로도 충분히 좋은 시작이라고 생각해요 😊
   </div>
 </div>
 
 <footer>
   <div class="intro-box" style="text-align:left; max-width:540px; margin:0 auto 18px;">
-    혹시 보시고, 궁금한 점이나 고민되는 부분 있으시면 편하게 DM 주세요 💕<br>
-    늦더라도 꼭 확인하고, 답변 드리고 있답니다! (DM 주고받으면 친밀감도 올라간다구요~ 😆 아래 클릭 👇🏻)<br><br>
-    <a href="https://www.instagram.com/2bin_mom/?hl=ko" target="_blank" rel="noopener">📸 @2bin_mom 인스타 DM 보내기</a>
+    혹시 보시고, 궁금한 점이나 고민되는 부분 있으시면<br>
+    편하게 DM 주세요 💕<br>
+    늦더라도 꼭 확인하고, 답변 드리고 있답니다!<br><span class="gap"></span>
+    <a class="insta" href="https://www.instagram.com/2bin_mom/?hl=ko" target="_blank" rel="noopener">📸 @2bin_mom 인스타 DM 보내기</a>
   </div>
   <div class="warn">⚠️ 본 자료는 투빈맘이 직접 정리한 콘텐츠입니다.<br>무단 복제·캡처·배포 금지 🚫<br>상업적 활용 시 법적 조치가 이루어질 수 있습니다.</div>
   <div>이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</div>
@@ -391,6 +661,54 @@
 </footer>
 
 <script>
+const STEP_IDS = ["step0","step1","step2","step3"];
+
+function showDetail(id, evt){
+  if (evt) evt.preventDefault();
+  document.getElementById("landingView").style.display = "none";
+  document.getElementById("detailView").classList.add("open");
+  document.getElementById("closingVoice").style.display = "none";
+  STEP_IDS.forEach(sid => {
+    const el = document.getElementById(sid);
+    if (el) el.classList.toggle("open", sid === id);
+  });
+  document.querySelectorAll("#detailDots span").forEach(dot => {
+    dot.classList.toggle("on", dot.dataset.s === id);
+  });
+  window.scrollTo(0, 0);
+  history.pushState({view:"detail", id}, "", "#" + id);
+}
+
+function showLanding(evt){
+  if (evt) evt.preventDefault();
+  document.getElementById("detailView").classList.remove("open");
+  document.getElementById("landingView").style.display = "";
+  document.getElementById("closingVoice").style.display = "";
+  window.scrollTo(0, 0);
+  history.pushState({view:"landing"}, "", location.pathname);
+}
+
+function initView(){
+  const hash = STEP_IDS.indexOf(location.hash.replace("#","")) >= 0 ? location.hash.replace("#","") : null;
+  if (hash){
+    showDetail(hash, null);
+    history.replaceState({view:"detail", id:hash}, "", "#" + hash);
+  } else {
+    document.getElementById("landingView").style.display = "";
+    document.getElementById("detailView").classList.remove("open");
+    document.getElementById("closingVoice").style.display = "";
+    history.replaceState({view:"landing"}, "", location.pathname);
+  }
+}
+
+window.addEventListener("popstate", e => {
+  const st = e.state;
+  if (st && st.view === "detail") showDetail(st.id, null);
+  else showLanding(null);
+});
+
+initView();
+
 function shareKakao(btn){
   const url = location.href;
   if (navigator.share){ navigator.share({title:document.title, url}).catch(() => {}); return; }
